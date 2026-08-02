@@ -1,240 +1,41 @@
 {
-  "meta": {
-    "course": "Innovative Precalculus",
-    "strand": "Foundational Fluency Extra Lesson",
-    "lessonNumber": 1,
-    "title": "Laws of Exponents",
-    "subtitle": "Understand the rules, reveal examples step by step, and check your fluency.",
-    "version": "1.0.0"
+  "meta":{
+    "course":"Innovative Precalculus",
+    "title":"Laws of Exponents",
+    "version":"2.0"
   },
-  "whyItMatters": "Exponent laws appear throughout precalculus in polynomial, rational, radical, exponential, and logarithmic functions.",
-  "learningGoals": [
-    "Interpret positive integer exponents as repeated multiplication.",
-    "Multiply and divide powers that have the same base.",
-    "Raise a power or product to another power.",
-    "Interpret zero and negative exponents.",
-    "Simplify expressions that require several exponent laws.",
-    "Write final answers using positive exponents."
-  ],
-  "warmup": [
-    {
-      "prompt": "Write $x^4$ as repeated multiplication.",
-      "answer": "$x\\cdot x\\cdot x\\cdot x$"
-    },
-    {
-      "prompt": "Evaluate $2^5$.",
-      "answer": "$32$"
-    },
-    {
-      "prompt": "Is $x^{-4}$ necessarily negative?",
-      "answer": "No. A negative exponent indicates a reciprocal."
-    },
-    {
-      "prompt": "What is $x^0$ when $x\\ne 0$?",
-      "answer": "$1$"
-    }
-  ],
-  "rules": [
-    {
-      "name": "Product Rule",
-      "formula": "$x^m\\cdot x^n=x^{m+n}$",
-      "explanation": "When multiplying powers with the same base, add the exponents."
-    },
-    {
-      "name": "Quotient Rule",
-      "formula": "$\\frac{x^m}{x^n}=x^{m-n}$",
-      "explanation": "When dividing powers with the same nonzero base, subtract the denominator exponent from the numerator exponent."
-    },
-    {
-      "name": "Power Rule",
-      "formula": "$(x^m)^n=x^{mn}$",
-      "explanation": "When raising a power to another power, multiply the exponents."
-    },
-    {
-      "name": "Power of a Product",
-      "formula": "$(xy)^n=x^ny^n$",
-      "explanation": "An exponent outside parentheses applies to every factor inside."
-    },
-    {
-      "name": "Zero Exponent",
-      "formula": "$x^0=1$",
-      "explanation": "Any nonzero base raised to the zero power equals 1."
-    },
-    {
-      "name": "Negative Exponent",
-      "formula": "$x^{-n}=\\frac{1}{x^n}$",
-      "explanation": "A negative exponent indicates a reciprocal."
-    }
-  ],
-  "examples": [
-    {
-      "label": "Worked Example 1",
-      "prompt": "Simplify $(3x^2y^4)^3$.",
-      "think": [
-        "Which factors are inside the parentheses?",
-        "To which factors must the outside exponent be applied?"
-      ],
-      "steps": [
-        {
-          "title": "Apply the outside exponent to every factor",
-          "content": "$(3x^2y^4)^3=3^3(x^2)^3(y^4)^3$"
-        },
-        {
-          "title": "Use the power rule",
-          "content": "$3^3x^6y^{12}$"
-        },
-        {
-          "title": "Simplify the coefficient",
-          "content": "$\\boxed{27x^6y^{12}}$"
-        }
-      ]
-    },
-    {
-      "label": "Worked Example 2",
-      "prompt": "Simplify $\\left(\\frac{2x^{-3}y^2}{xy^3}\\right)^{-4}$.",
-      "think": [
-        "Simplify the powers inside the parentheses first.",
-        "Then apply the outside exponent to every factor."
-      ],
-      "steps": [
-        {
-          "title": "Simplify inside the parentheses",
-          "content": "$\\frac{2x^{-3}y^2}{xy^3}=2x^{-4}y^{-1}$"
-        },
-        {
-          "title": "Apply the outside exponent",
-          "content": "$(2x^{-4}y^{-1})^{-4}=2^{-4}x^{16}y^4$"
-        },
-        {
-          "title": "Write with positive exponents",
-          "content": "$\\boxed{\\frac{x^{16}y^4}{16}}$"
-        }
-      ]
-    }
-  ],
-  "guidedPractice": [
-    {
-      "prompt": "Simplify $q^5q^8$.",
-      "hint": "The bases match and are being multiplied. Add the exponents.",
-      "solution": "$q^5q^8=q^{13}$"
-    },
-    {
-      "prompt": "Simplify $\\frac{r^{12}}{r^7}$.",
-      "hint": "Subtract the exponent in the denominator from the exponent in the numerator.",
-      "solution": "$\\frac{r^{12}}{r^7}=r^5$"
-    },
-    {
-      "prompt": "Simplify $(4a^2b^3)^2$.",
-      "hint": "Apply the outside exponent to the coefficient and to each variable factor.",
-      "solution": "$(4a^2b^3)^2=16a^4b^6$"
-    },
-    {
-      "prompt": "Rewrite $\\frac{m^{-2}n^5}{p^{-3}}$ using positive exponents.",
-      "hint": "Move factors with negative exponents across the fraction bar.",
-      "solution": "$\\frac{n^5p^3}{m^2}$"
-    }
-  ],
-  "misconceptions": [
-    {
-      "incorrect": "$x^3+x^4=x^7$",
-      "explanation": "The product rule applies to multiplication, not addition."
-    },
-    {
-      "incorrect": "$(x^3)^4=x^7$",
-      "explanation": "A power raised to a power requires multiplying the exponents: $(x^3)^4=x^{12}$."
-    },
-    {
-      "incorrect": "$x^{-3}=-x^3$",
-      "explanation": "A negative exponent indicates a reciprocal: $x^{-3}=\\frac{1}{x^3}$."
-    },
-    {
-      "incorrect": "$(2x)^3=2x^3$",
-      "explanation": "The exponent applies to both factors: $(2x)^3=8x^3$."
-    }
-  ],
-  "checkIt": [
-    {
-      "prompt": "Simplify $x^7x^5$.",
-      "acceptedAnswers": [
-        "x^12",
-        "x12"
-      ],
-      "displayAnswer": "$x^{12}$",
-      "feedback": {
-        "x^35": "You multiplied the exponents. When multiplying powers with the same base, add them.",
-        "2x^12": "The coefficient does not become 2. The powers combine into one power of x."
+  "calculusBeforeCalculus":{
+    "title":"Calculus Before Calculus",
+    "intro":"Exponent rules make calculus possible.",
+    "bigIdea":"Exponent Fluency → Algebra → Calculus",
+    "situations":[
+      {
+        "title":"Derivative Preview",
+        "summary":"Recognize the Power Rule pattern.",
+        "steps":[
+          "$\\frac{d}{dx}(x^7)=7x^6$",
+          "$\\frac{d}{dx}(x^{-3})=-3x^{-4}$",
+          "$\\frac{d}{dx}(x^{1/2})=\\frac12x^{-1/2}$"
+        ]
+      },
+      {
+        "title":"Difference Quotient",
+        "summary":"Simplify before taking a limit.",
+        "steps":[
+          "$\\frac{(x+h)^2-x^2}{h}$",
+          "$=\\frac{2xh+h^2}{h}$",
+          "$=2x+h$"
+        ]
+      },
+      {
+        "title":"Scaling",
+        "summary":"Why powers appear in geometry.",
+        "steps":[
+          "$L\\rightarrow kL$",
+          "$A\\rightarrow k^2A$",
+          "$V\\rightarrow k^3V$"
+        ]
       }
-    },
-    {
-      "prompt": "Simplify $\\frac{y^{10}}{y^4}$.",
-      "acceptedAnswers": [
-        "y^6",
-        "y6"
-      ],
-      "displayAnswer": "$y^6$",
-      "feedback": {
-        "y^14": "Division uses subtraction of exponents, not addition.",
-        "y^-6": "Subtract the denominator exponent from the numerator exponent: $10-4$."
-      }
-    },
-    {
-      "prompt": "Simplify $(z^3)^5$.",
-      "acceptedAnswers": [
-        "z^15",
-        "z15"
-      ],
-      "displayAnswer": "$z^{15}$",
-      "feedback": {
-        "z^8": "A power raised to a power requires multiplying the exponents."
-      }
-    },
-    {
-      "prompt": "Rewrite $6a^{-4}$ using positive exponents.",
-      "acceptedAnswers": [
-        "6/a^4",
-        "6/(a^4)",
-        "6/a4"
-      ],
-      "displayAnswer": "$\\frac{6}{a^4}$",
-      "feedback": {
-        "-6a^4": "A negative exponent indicates a reciprocal; it does not make the expression negative."
-      }
-    },
-    {
-      "prompt": "Simplify $\\frac{(2x^3)^2}{4x}$.",
-      "acceptedAnswers": [
-        "x^5",
-        "x5"
-      ],
-      "displayAnswer": "$x^5$",
-      "feedback": {
-        "x^2": "Apply the outside exponent first: $(x^3)^2=x^6$.",
-        "2x^5": "Since $2^2=4$, the coefficient cancels with the 4 in the denominator."
-      }
-    }
-  ],
-  "retrievalPractice": [
-    {
-      "prompt": "State the product rule in words.",
-      "answer": "Add the exponents when multiplying powers with the same base."
-    },
-    {
-      "prompt": "Simplify $(c^5)^4$.",
-      "answer": "$c^{20}$"
-    },
-    {
-      "prompt": "Correct the error: $(3x^2)^3=9x^5$.",
-      "answer": "$(3x^2)^3=3^3x^6=27x^6$"
-    },
-    {
-      "prompt": "Simplify $\\frac{5x^4y^{-2}}{10x^{-1}y^3}$.",
-      "answer": "$\\frac{x^5}{2y^5}$"
-    }
-  ],
-  "reflectionOptions": [
-    "Choosing the correct rule",
-    "Powers outside parentheses",
-    "Negative exponents",
-    "Multistep expressions"
-  ]
+    ]
+  }
 }

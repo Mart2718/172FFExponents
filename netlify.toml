@@ -1,9 +1,3 @@
 [build]
-  publish = "."
-  command = ""
-
-[[headers]]
-  for = "/*.json"
-  [headers.values]
-    Content-Type = "application/json; charset=utf-8"
-    Cache-Control = "public, max-age=0, must-revalidate"
+publish="."
+command=""
