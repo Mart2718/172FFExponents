@@ -97,3 +97,8 @@ This version preserves the complete original Laws of Exponents lesson and adds:
 
 Replace the files in your existing GitHub repository with the contents of this package.
 Netlify will redeploy automatically after the GitHub commit.
+
+## Version 2.0.1 Fix
+
+This package adds the missing `formatNumber()` helper required by the
+Calculus Before Calculus interactive controls.

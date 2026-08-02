@@ -472,6 +472,21 @@ function markComplete(key) {
   setText("progress-label", `${percent}%`);
 }
 
+
+function formatNumber(value) {
+  const number = Number(value);
+
+  if (!Number.isFinite(number)) {
+    return String(value);
+  }
+
+  if (Number.isInteger(number)) {
+    return String(number);
+  }
+
+  return number.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+}
+
 function setText(id, value) {
   document.getElementById(id).textContent = value;
 }
