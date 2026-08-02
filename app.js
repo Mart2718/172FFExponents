@@ -1,6 +1,130 @@
 let lessonData;
 const completed = new Set();
 const totalMilestones = 12;
+let mathJaxQueue = Promise.resolve();
+
+const powerRuleStates = [
+  {
+    value: -4,
+    label: "−4",
+    kind: "Negative exponent",
+    functionTex: "x^{-4}",
+    derivativeTex: "-4x^{-5}",
+    rewrittenTex: "-\\frac{4}{x^5}",
+    newExponent: "−5",
+    note: "The new negative exponent can be rewritten with a positive exponent in the denominator."
+  },
+  {
+    value: -3,
+    label: "−3",
+    kind: "Negative exponent",
+    functionTex: "x^{-3}",
+    derivativeTex: "-3x^{-4}",
+    rewrittenTex: "-\\frac{3}{x^4}",
+    newExponent: "−4",
+    note: "Both the original function and its derivative require x ≠ 0."
+  },
+  {
+    value: -2,
+    label: "−2",
+    kind: "Negative exponent",
+    functionTex: "x^{-2}",
+    derivativeTex: "-2x^{-3}",
+    rewrittenTex: "-\\frac{2}{x^3}",
+    newExponent: "−3",
+    note: "A negative exponent indicates a reciprocal; it does not make the function negative."
+  },
+  {
+    value: -1,
+    label: "−1",
+    kind: "Negative exponent",
+    functionTex: "x^{-1}",
+    derivativeTex: "-x^{-2}",
+    rewrittenTex: "-\\frac{1}{x^2}",
+    newExponent: "−2",
+    note: "The coefficient −1 is normally written as a leading minus sign."
+  },
+  {
+    value: 0,
+    label: "0",
+    kind: "Zero exponent",
+    functionTex: "x^0=1\\;(x\\ne0)",
+    derivativeTex: "0",
+    rewrittenTex: "0",
+    newExponent: "not needed",
+    note: "The coefficient is 0, so the derivative is 0 everywhere the original function is defined. We do not retain an x⁻¹ factor."
+  },
+  {
+    value: 0.5,
+    label: "1/2",
+    kind: "Fractional exponent",
+    functionTex: "x^{1/2}=\\sqrt{x}",
+    derivativeTex: "\\frac12x^{-1/2}",
+    rewrittenTex: "\\frac{1}{2\\sqrt{x}}",
+    newExponent: "−1/2",
+    note: "For real-valued functions, this derivative formula applies for x > 0."
+  },
+  {
+    value: 2 / 3,
+    label: "2/3",
+    kind: "Fractional exponent",
+    functionTex: "x^{2/3}=\\sqrt[3]{x^2}",
+    derivativeTex: "\\frac23x^{-1/3}",
+    rewrittenTex: "\\frac{2}{3\\sqrt[3]{x}}",
+    newExponent: "−1/3",
+    note: "The function is defined at x = 0, but this derivative formula is not; the graph has a cusp there."
+  },
+  {
+    value: 1,
+    label: "1",
+    kind: "Positive exponent",
+    functionTex: "x",
+    derivativeTex: "1\\cdot x^0",
+    rewrittenTex: "1",
+    newExponent: "0",
+    note: "Because x⁰ = 1, the derivative of x is 1."
+  },
+  {
+    value: 2,
+    label: "2",
+    kind: "Positive exponent",
+    functionTex: "x^2",
+    derivativeTex: "2x",
+    rewrittenTex: "2x",
+    newExponent: "1",
+    note: "The exponent becomes the coefficient, then the exponent decreases by 1."
+  },
+  {
+    value: 3,
+    label: "3",
+    kind: "Positive exponent",
+    functionTex: "x^3",
+    derivativeTex: "3x^2",
+    rewrittenTex: "3x^2",
+    newExponent: "2",
+    note: "The result is another power function."
+  },
+  {
+    value: 5,
+    label: "5",
+    kind: "Positive exponent",
+    functionTex: "x^5",
+    derivativeTex: "5x^4",
+    rewrittenTex: "5x^4",
+    newExponent: "4",
+    note: "The result is another power function."
+  },
+  {
+    value: 8,
+    label: "8",
+    kind: "Positive exponent",
+    functionTex: "x^8",
+    derivativeTex: "8x^7",
+    rewrittenTex: "8x^7",
+    newExponent: "7",
+    note: "The result is another power function."
+  }
+];
 
 document.addEventListener("DOMContentLoaded", init);
 
@@ -281,28 +405,38 @@ function renderCbcControls(situation) {
   if (situation.id === "power-rule") {
     return `
       <div class="cbc-control-panel">
-        <label for="power-n"><strong>Exponent n:</strong> <span id="power-n-value">5</span></label>
-        <input id="power-n" class="cbc-slider" data-situation="power-rule"
-          type="range" min="-4" max="10" step="1" value="5">
-        <div class="cbc-metrics">
-          <div class="cbc-metric"><span>Original exponent</span><strong id="metric-original-n">5</strong></div>
-          <div class="cbc-metric"><span>Multiplier</span><strong id="metric-coefficient">5</strong></div>
-          <div class="cbc-metric"><span>New exponent</span><strong id="metric-new-n">4</strong></div>
+        <div class="cbc-control-heading">
+          <label for="power-n"><strong>Exponent n:</strong> <span id="power-n-value">2</span></label>
+          <span id="power-kind" class="cbc-kind">Positive exponent</span>
         </div>
+        <input id="power-n" class="cbc-slider" data-situation="power-rule"
+          type="range" min="0" max="${powerRuleStates.length - 1}" step="1" value="8"
+          aria-describedby="power-slider-help power-note">
+        <div id="power-slider-help" class="cbc-slider-scale" aria-hidden="true">
+          <span>negative</span><span>zero</span><span>fractional</span><span>positive</span>
+        </div>
+        <div class="cbc-metrics">
+          <div class="cbc-metric"><span>Original exponent</span><strong id="metric-original-n">2</strong></div>
+          <div class="cbc-metric"><span>Multiplier</span><strong id="metric-coefficient">2</strong></div>
+          <div class="cbc-metric"><span>New exponent</span><strong id="metric-new-n">1</strong></div>
+        </div>
+        <p id="power-note" class="cbc-note"></p>
       </div>`;
   }
 
   if (situation.id === "difference-quotient") {
     return `
       <div class="cbc-control-panel">
-        <label for="dq-h"><strong>Value of h:</strong> <span id="dq-h-value">2</span></label>
+        <label for="dq-h"><strong>Positive change h:</strong> <span id="dq-h-value">1.5</span></label>
         <input id="dq-h" class="cbc-slider" data-situation="difference-quotient"
-          type="range" min=".1" max="5" step=".1" value="2">
-        <p class="muted">Use x = 3 and watch 2x + h approach 2x as h approaches 0.</p>
+          type="range" min=".05" max="2.5" step=".05" value="1.5"
+          aria-describedby="dq-help">
+        <div class="cbc-slider-scale" aria-hidden="true"><span>h → 0</span><span>h = 2.5</span></div>
+        <p id="dq-help" class="muted">The points are on $f(u)=u^2$ at $u=x$ and $u=x+h$, with $x=2$. Move left to make the secant approach the tangent.</p>
         <div class="cbc-metrics">
-          <div class="cbc-metric"><span>x</span><strong>3</strong></div>
-          <div class="cbc-metric"><span>2x + h</span><strong id="metric-dq">8</strong></div>
-          <div class="cbc-metric"><span>Target 2x</span><strong>6</strong></div>
+          <div class="cbc-metric"><span>h</span><strong id="metric-h">1.5</strong></div>
+          <div class="cbc-metric"><span>Secant slope 2x + h</span><strong id="metric-dq">5.5</strong></div>
+          <div class="cbc-metric"><span>Tangent slope 2x</span><strong>4</strong></div>
         </div>
       </div>`;
   }
@@ -322,38 +456,80 @@ function renderCbcControls(situation) {
 
 function updateCbcVisual(id) {
   if (id === "power-rule") {
-    const n = Number(document.getElementById("power-n")?.value || 5);
-    setText("power-n-value", n);
-    setText("metric-original-n", n);
-    setText("metric-coefficient", n);
-    setText("metric-new-n", n - 1);
+    const stateIndex = Number(document.getElementById("power-n")?.value || 8);
+    const state = powerRuleStates[stateIndex];
+    setText("power-n-value", state.label);
+    setText("power-kind", state.kind);
+    setText("metric-original-n", state.label);
+    setText("metric-coefficient", state.label);
+    setText("metric-new-n", state.newExponent);
+    setText("power-note", state.note);
 
-    const original = n === 0 ? "1" : `x^${n}`;
-    const derivative = n === 0 ? "0" : `${n}x^${n - 1}`;
-    document.getElementById("cbc-visual-power-rule").innerHTML =
-      `<div class="cbc-power-display">$f(x)=${original}$<br>$f'(x)=${derivative}$</div>`;
-    typeset(document.getElementById("cbc-visual-power-rule"));
+    const visual = document.getElementById("cbc-visual-power-rule");
+    clearTypeset(visual);
+    visual.innerHTML = `
+      <div class="cbc-power-display">
+        <div class="cbc-formula-row"><span>Function</span><strong>$f(x)=${state.functionTex}$</strong></div>
+        <div class="cbc-rule-arrow" aria-hidden="true">apply $\\frac{d}{dx}(x^n)=nx^{n-1}$</div>
+        <div class="cbc-formula-row"><span>Power Rule result</span><strong>$f'(x)=${state.derivativeTex}$</strong></div>
+        <div class="cbc-formula-row cbc-final-form"><span>Simplified form</span><strong>$f'(x)=${state.rewrittenTex}$</strong></div>
+      </div>`;
+    typeset(visual);
     return;
   }
 
   if (id === "difference-quotient") {
-    const h = Number(document.getElementById("dq-h")?.value || 2);
-    const value = 6 + h;
+    const h = Number(document.getElementById("dq-h")?.value || 1.5);
+    const x = 2;
+    const value = 2 * x + h;
     setText("dq-h-value", formatNumber(h));
+    setText("metric-h", formatNumber(h));
     setText("metric-dq", formatNumber(value));
+    const plot = { left: 62, right: 642, top: 28, bottom: 330, xMax: 5, yMax: 25 };
+    const mapX = value => plot.left + (value / plot.xMax) * (plot.right - plot.left);
+    const mapY = value => plot.bottom - (value / plot.yMax) * (plot.bottom - plot.top);
+    const px = mapX(x);
+    const py = mapY(x ** 2);
+    const qx = mapX(x + h);
+    const qy = mapY((x + h) ** 2);
+    const tangentStartX = 0.9;
+    const tangentEndX = 4.1;
+    const tangentY = u => x ** 2 + 2 * x * (u - x);
+    const curvePoints = Array.from({ length: 51 }, (_, index) => {
+      const u = index / 10;
+      return `${mapX(u).toFixed(1)},${mapY(u ** 2).toFixed(1)}`;
+    }).join(" ");
+
     document.getElementById("cbc-visual-difference-quotient").innerHTML = `
-      <svg viewBox="0 0 640 240" role="img" aria-label="Difference quotient approaching a derivative">
-        <line x1="65" y1="190" x2="585" y2="190" stroke="#88979b" stroke-width="3"/>
-        <line x1="90" y1="30" x2="90" y2="205" stroke="#88979b" stroke-width="3"/>
-        <path d="M 100 180 Q 260 150 340 90 Q 440 20 560 45"
-          fill="none" stroke="#6f3cc3" stroke-width="5"/>
-        <circle cx="330" cy="98" r="7" fill="#147a82"/>
-        <circle cx="${330 + h * 35}" cy="${98 - h * 18}" r="7" fill="#315efb"/>
-        <line x1="330" y1="98" x2="${330 + h * 35}" y2="${98 - h * 18}"
-          stroke="#315efb" stroke-width="3"/>
-        <text x="295" y="125" class="diagram-side">x</text>
-        <text x="${345 + h * 35}" y="${90 - h * 18}" class="diagram-side">x+h</text>
-      </svg>`;
+      <div class="cbc-dq-visual">
+        <svg viewBox="0 0 700 390" role="img" aria-labelledby="dq-svg-title dq-svg-desc">
+          <title id="dq-svg-title">Secant line approaching the tangent line on f of u equals u squared</title>
+          <desc id="dq-svg-desc">Point P is fixed at x equals 2. Point Q is at x plus h. As h decreases, Q moves toward P and the blue secant line approaches the dashed tangent line.</desc>
+          <defs>
+            <marker id="dq-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L7,3 z" fill="#667085"/>
+            </marker>
+          </defs>
+          <line x1="${plot.left}" y1="${plot.bottom}" x2="660" y2="${plot.bottom}" class="dq-axis" marker-end="url(#dq-arrow)"/>
+          <line x1="${plot.left}" y1="${plot.bottom}" x2="${plot.left}" y2="16" class="dq-axis" marker-end="url(#dq-arrow)"/>
+          <text x="663" y="350" class="dq-axis-label">u</text>
+          <text x="38" y="20" class="dq-axis-label">f(u)</text>
+          <polyline points="${curvePoints}" class="dq-curve"/>
+          <line x1="${mapX(tangentStartX)}" y1="${mapY(tangentY(tangentStartX))}" x2="${mapX(tangentEndX)}" y2="${mapY(tangentY(tangentEndX))}" class="dq-tangent"/>
+          <line x1="${px}" y1="${py}" x2="${qx}" y2="${qy}" class="dq-secant"/>
+          <line x1="${px}" y1="${py}" x2="${qx}" y2="${py}" class="dq-rise-run"/>
+          <line x1="${qx}" y1="${py}" x2="${qx}" y2="${qy}" class="dq-rise-run"/>
+          <circle cx="${px}" cy="${py}" r="7" class="dq-point-p"/>
+          <circle cx="${qx}" cy="${qy}" r="7" class="dq-point-q"/>
+          <text x="${px - 30}" y="${py - 12}" class="dq-point-label">P: x</text>
+          <text x="${Math.min(qx + 10, 610)}" y="${Math.max(qy - 10, 35)}" class="dq-point-label">Q: x+h</text>
+          <text x="${(px + qx) / 2 - 6}" y="${py + 23}" class="dq-measure-label">h</text>
+          <text x="405" y="308" class="dq-tangent-label">tangent slope = 2x = 4</text>
+          <text x="430" y="72" class="dq-secant-label">secant slope = 2x+h = ${formatNumber(value)}</text>
+        </svg>
+        <div class="cbc-dq-equation">$\\dfrac{(x+h)^2-x^2}{h}=2x+h=${formatNumber(value)}$</div>
+      </div>`;
+    typeset(document.getElementById("cbc-visual-difference-quotient"));
     return;
   }
 
@@ -493,7 +669,15 @@ function setText(id, value) {
 
 function typeset(element = document.body) {
   if (window.MathJax?.typesetPromise) {
-    window.MathJax.typesetPromise([element]).catch(console.error);
+    mathJaxQueue = mathJaxQueue
+      .then(() => window.MathJax.typesetPromise([element]))
+      .catch(error => console.error("MathJax typesetting failed:", error));
+  }
+}
+
+function clearTypeset(element) {
+  if (window.MathJax?.typesetClear) {
+    window.MathJax.typesetClear([element]);
   }
 }
 

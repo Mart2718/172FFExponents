@@ -102,3 +102,12 @@ Netlify will redeploy automatically after the GitHub commit.
 
 This package adds the missing `formatNumber()` helper required by the
 Calculus Before Calculus interactive controls.
+
+## Version 2.1 Calculus Before Calculus Correction
+
+This package preserves the complete lesson and corrects the Calculus Before Calculus section:
+
+- the Power Rule explorer now includes positive, zero, negative, and fractional exponents with exact equivalent forms and domain notes;
+- the difference-quotient explorer now plots two points on $f(u)=u^2$ and shows the true secant line approaching the tangent at $x=2$;
+- the CBC cards, metrics, formulas, and SVGs remain within the page at common desktop widths;
+- MathJax updates are queued so rapid interactive changes render reliably.

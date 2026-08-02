@@ -5,7 +5,7 @@
     "lessonNumber": 1,
     "title": "Laws of Exponents",
     "subtitle": "Understand the rules, reveal examples step by step, and check your fluency.",
-    "version": "2.0.0"
+    "version": "2.1.0"
   },
   "whyItMatters": "Exponent laws appear throughout precalculus in polynomial, rational, radical, exponential, and logarithmic functions.",
   "learningGoals": [
@@ -246,8 +246,8 @@
         "id": "power-rule",
         "title": "Derivative Preview: The Power Rule",
         "tag": "Derivatives",
-        "summary": "In Calculus I, the Power Rule transforms a power function into a new power function. Exponent fluency is needed to interpret negative and fractional exponents and to rewrite final answers.",
-        "prompt": "Use the exponent slider to compare a power function with its future derivative.",
+        "summary": "In Calculus I, the derivative Power Rule transforms a power function into a new expression. Explore positive, zero, negative, and fractional exponents, then compare the rule's result with an equivalent simplified form.",
+        "prompt": "Move through every exponent type. Track the multiplier and the new exponent, and notice when exponent laws are needed to rewrite the result.",
         "steps": [
           {
             "title": "Start with a power function",
@@ -274,7 +274,7 @@
         "title": "Limit Preview: Simplifying a Difference Quotient",
         "tag": "Limits",
         "summary": "Before a limit can reveal an instantaneous rate of change, algebra must simplify the difference quotient. Powers, expansion, factoring, and cancellation all work together.",
-        "prompt": "Reveal how the difference quotient for $f(x)=x^2$ simplifies before the limit is evaluated.",
+        "prompt": "Move the point at $x+h$ toward the point at $x=2$. Compare the secant slope $2x+h$ with the tangent slope $2x$ as $h$ approaches zero.",
         "steps": [
           {
             "title": "Form the difference quotient",
